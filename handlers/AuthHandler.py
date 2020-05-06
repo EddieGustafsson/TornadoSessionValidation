@@ -14,8 +14,11 @@ class LoginHandler(BaseHandler):
         username = self.get_argument("username")
         password = self.get_argument("password")
 
+        remote_ip = self.request.remote_ip
+        user_agent = self.request.headers.get('User-Agent')
+
         if "eddie" == username and "ärcool" == password:
-            session_id = await SessionHandler.generate_session(username)
+            session_id = await SessionHandler.generate_session(username, remote_ip, user_agent)
 
             self.set_secure_cookie("session", session_id)
             self.redirect(self.reverse_url("main"))
